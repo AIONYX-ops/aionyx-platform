@@ -18,15 +18,24 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          # Configure git
+          # Create a temporary directory for the clean sync
+          mkdir temp_sync
+          cp -R . temp_sync/
+          cd temp_sync
+
+          # Initialize a fresh git repo (this wipes out the PDF history)
+          rm -rf .git
+          git init
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
 
-          # Create a temp branch and remove PDFs (they are rejected by HF Spaces)
-          git checkout -b hf-sync-branch
+          # Remove problematic PDFs and other junk
           find docs/Papers/ -name "*.pdf" -delete
-          git add -A
-          git commit -m "chore: sync to HF (excluding binary papers)"
+          rm -rf .github  # We don't need workflows on the Space
 
-          # Force push only the sanitized branch to HF Space's main
-          git push --force https://Siraj-Wahaj1:$HF_TOKEN@huggingface.co/spaces/AIONYX/README hf-sync-branch:main
+          # Add and commit
+          git add .
+          git commit -m "chore: professional sync to HF Space"
+
+          # Force push to HF Space's main
+          git push --force https://Siraj-Wahaj1:$HF_TOKEN@huggingface.co/spaces/AIONYX/README main
