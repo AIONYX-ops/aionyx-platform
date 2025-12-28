@@ -8,10 +8,23 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = "2.23.0"
     }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "2.11.0"
+    }
   }
 }
 
 provider "kind" {}
+
+provider "helm" {
+  kubernetes {
+    host                   = kind_cluster.aionyx_cluster.endpoint
+    client_certificate     = kind_cluster.aionyx_cluster.client_certificate
+    client_key             = kind_cluster.aionyx_cluster.client_key
+    cluster_ca_certificate = kind_cluster.aionyx_cluster.cluster_ca_certificate
+  }
+}
 
 resource "kind_cluster" "aionyx_cluster" {
   name           = "aionyx-cluster"
