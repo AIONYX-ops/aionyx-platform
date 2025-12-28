@@ -20,7 +20,8 @@ jobs:
         run: |
           # Create a temporary directory for the clean sync
           mkdir temp_sync
-          cp -R . temp_sync/
+          # Copy all files including hidden ones, but exclude temp_sync itself
+          rsync -av --exclude='temp_sync' . temp_sync/
           cd temp_sync
 
           # Initialize a fresh git repo (this wipes out the PDF history)
