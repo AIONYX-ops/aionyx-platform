@@ -1,0 +1,26 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+tfplan
+.terraform.lock.hcl
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dagster
+storage/
+*.db
+
+# AIONYX Local Assets
+docs/assets/branding/logo.png
